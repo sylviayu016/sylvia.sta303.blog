@@ -1,8 +1,86 @@
-## Welcome to GitHub Pages
+## Exploring Video Games Dataset in 2019 & Liza Wood's blog:
 
-You can use the [editor on GitHub](https://github.com/sylviayu016/sylvia.sta303.blog/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+**Welcome to my first statistics blog!!!** To introduce myself, I am Sylvia from the University of Toronto and I am double majoring in Statistics and Mathematics. 
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+In this blog, I am exploring the Video Games Dataset posted in the Github Tidy Tuesday activity page in 2019-07-30. (If you are also interested about Tidy Tuesday or this dataset you can click this link: https://github.com/rfordatascience/tidytuesday/tree/master/data/2019/2019-07-30#video-games-dataset.)
+
+In the introduction part of that week's dataset, Liza Wood and her blog was mentioned, which caught my attention. (Link to her blog: https://cruiseofdimensionality.home.blog/2019/07/24/pc-video-games-we-still-play/) 
+I am wondering how she was able to visualize the data in the way she presented in her blog. So I think "why not doing it by myself and trying to reproduce the graphs"! It turns out I cannot perfectly reproduce the graphs, and below are some my process and thoughts. I am following Liza's description and try to reproduce the bar plots presented in her blog using my understandings and knowledge learned from class.
+**Hope you enjoy!!!**
+
+### Get the Data & Cleaning
+
+```{r}
+#The packages I am using
+library(tidyverse)
+library(ggplot2)
+library(stringi)
+library(janitor)
+library(grid)
+```
+Accroding to the Tidy Tuesday activity page, the data will be cleaned following the below steps.
+```{r}
+url <- "https://raw.githubusercontent.com/lizawood/apps-and-games/master/PC_Games/PCgames_2004_2018_raw.csv"
+
+# read in raw data
+raw_df <- url %>% 
+  read_csv() %>% 
+  janitor::clean_names() 
+
+# clean up some of the factors and playtime data
+games19c <- raw_df %>% 
+  mutate(price = as.numeric(price),
+         score_rank = word(score_rank_userscore_metascore, 1),
+         average_playtime = word(playtime_median, 1),
+         median_playtime = word(playtime_median, 2),
+         median_playtime = str_remove(median_playtime, "\\("),
+         median_playtime = str_remove(median_playtime, "\\)"),
+         average_playtime = 60 * as.numeric(str_sub(average_playtime, 1, 2)) +
+           as.numeric(str_sub(average_playtime, 4, 5)),
+         median_playtime = 60 * as.numeric(str_sub(median_playtime, 1, 2)) +
+           as.numeric(str_sub(median_playtime, 4, 5)),
+         metascore = as.double(str_sub(score_rank_userscore_metascore, start = -4, end = -3))) %>% 
+  select(-score_rank_userscore_metascore, -score_rank, -playtime_median) %>% 
+  rename(publisher = publisher_s, developer = developer_s)
+```
+When looking at the dataset myself, I decide to do a further clean up for the data. I checked there is no NAs under the _number_ variable, and replaced the NAs under _price_ to be 0.00. 
+```
+games19c %>%
+  filter(is.na(number))
+
+games19r <- games19c %>%
+  mutate_if(is.numeric, replace_na, replace = 0) #price na replaced by 0.00
+```
+_games19r_ is the final, cleaned data I am using for the following steps.  
+
+### Years With More Games Still Being Played 
+
+In this part, we are interested about the relationship between the growth of the number of games available in Steam and the number of games released in each year. 
+
+Since we need to plot based on each games' releasing year. I create a new variable _release_year_.
+
+```{r}
+games19r <- games19r %>%
+  mutate(release_year = stri_extract_last_words(release_date))
+```
+And the code chunk below is to ggplot the bar plot
+```
+games19r %>%
+  ggplot(aes(x = release_year)) +
+  geom_bar() +
+  scale_x_discrete(limits = factor(2004:2018), breaks = seq(2004, 2016, by = 4)) +
+  labs(title = str_c("PC Games Released on Steam\n", "by Release Year"),
+       x = "Release Year",
+       y = "Number of Games Released") +
+  scale_y_continuous(limits = c(0, 9000), breaks = seq(0, 7500, by = 2500))
+```
+#not finish! Trying to submit first...
+
+
+
+
+
+
 
 ### Markdown
 
