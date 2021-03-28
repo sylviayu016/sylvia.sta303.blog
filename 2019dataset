@@ -2,7 +2,7 @@
 
 **Welcome to my first statistics blog!!!** To introduce myself, I am Sylvia from the University of Toronto and I am double majoring in Statistics and Mathematics. 
 
-In this blog, I am exploring the Video Games Dataset posted in the Github Tidy Tuesday activity page in 2019-07-30. (If you are also interested about Tidy Tuesday or this dataset you can click this link: https://github.com/rfordatascience/tidytuesday/tree/master/data/2019/2019-07-30#video-games-dataset.)
+In this blog, I am exploring the Video Games Dataset posted on the Github Tidy Tuesday activity page in 2019-07-30. (If you are also interested in Tidy Tuesday or this dataset you can click this link: https://github.com/rfordatascience/tidytuesday/tree/master/data/2019/2019-07-30#video-games-dataset.)
 
 In the introduction part of that week's dataset, Liza Wood and her blog was mentioned, which caught my attention. (Link to her blog: https://cruiseofdimensionality.home.blog/2019/07/24/pc-video-games-we-still-play/) 
 I am wondering how she was able to visualize the data in the way she presented in her blog. So I think "why not doing it by myself and trying to reproduce the graphs"! It turns out I cannot perfectly reproduce the graphs, and below are some my process and thoughts. I am following Liza's description and try to reproduce the bar plots presented in her blog using my understandings and knowledge learned from class.
@@ -18,7 +18,7 @@ library(stringi)
 library(janitor)
 library(grid)
 ```
-Accroding to the Tidy Tuesday activity page, the data will be cleaned following the below steps.
+According to the Tidy Tuesday activity page, the data will be cleaned following the below steps.
 ```{r}
 url <- "https://raw.githubusercontent.com/lizawood/apps-and-games/master/PC_Games/PCgames_2004_2018_raw.csv"
 
@@ -55,7 +55,7 @@ _games19r_ is the final, cleaned data I am using for the following steps.
 
 ### Years With More Games Still Being Played 
 
-In this part, we are interested about the relationship between the growth of the number of games available in Steam and the number of games released in each year. 
+In this part, we are interested in the relationship between the growth of the number of games available in Steam and the number of games released each year. 
 
 Since we need to plot based on each games' releasing year. I create a new variable _release_year_.
 
