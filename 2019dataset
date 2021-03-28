@@ -74,6 +74,7 @@ games19r %>%
        y = "Number of Games Released") +
   scale_y_continuous(limits = c(0, 9000), breaks = seq(0, 7500, by = 2500))
 ```
+![Image](src="https://user-images.githubusercontent.com/69263006/112754532-7c722600-8faa-11eb-9cd6-f31499fc68c3.PNG")
 <img width="265" alt="1 1" src="https://user-images.githubusercontent.com/69263006/112754532-7c722600-8faa-11eb-9cd6-f31499fc68c3.PNG">
 
 
